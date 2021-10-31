@@ -17,35 +17,35 @@ const users = [
 router.get("/usuarios", (req, res) => {
   const lista = users;
   if (Object.keys(lista).length == 0) {
-    res.status(204).json("Nenhum usuário encontrado.");
+    res.status(204).json();
     return;
   }
   res.status(200).json(users);
 });
 
-router.get("/user/:id", (req, res) => {
+router.get("/users/:id", (req, res) => {
   const id = req.params.id - 1;
   const user = users[id];
   if (!user) {
-    res.status(204).json({ message: "Nenhum usuário encontrado." });
+    res.status(204).json();
     return;
   }
 
   res.status(200).json(user);
 });
 
-router.get("/usuario/:nome", (req, res) => {
+router.get("/usuarios/:nome", (req, res) => {
   const nome = req.params.nome;
   const index = users.findIndex((item) => item.nome === nome);
   const user = users[index];
   if (index == -1) {
-    res.status(204).json("Usuário não encontrado.");
+    res.status(204).json();
     return;
   }
   res.status(200).json(user);
 });
 
-router.post("/inserir", (req, res) => {
+router.post("/usuarios/inserir", (req, res) => {
   const user = req.body;
 
   if (!user.nome) {
@@ -72,10 +72,15 @@ router.post("/inserir", (req, res) => {
   res.status(200).json({ message, users });
 });
 
-router.put("/editar/:id", (req, res) => {
+router.put("/usuarios/editar/:id", (req, res) => {
   const id = req.params.id - 1;
+  let user = users[id];
+  if (!user) {
+    res.status(204).json();
+    return;
+  }
 
-  const user = req.body;
+  user = req.body;
   if (!user.nome) {
     res.status(400).json(`Nome não especificado.`);
     return;
@@ -101,7 +106,7 @@ router.put("/editar/:id", (req, res) => {
   res.status(200).json({ message, users });
 });
 
-router.delete("/delete/:id", (req, res) => {
+router.delete("/usuarios/delete/:id", (req, res) => {
   const id = req.params.id - 1;
   const user = users[id];
   delete users[id];
@@ -109,7 +114,7 @@ router.delete("/delete/:id", (req, res) => {
   res.status(200).json({ message, users });
 });
 
-router.delete("/deletar/:id", (req, res) => {
+router.delete("/usuarios/deletar/:id", (req, res) => {
   const id = req.params.id - 1;
   const user = users[id];
   users.splice(id, 1);
