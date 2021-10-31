@@ -109,6 +109,11 @@ router.put("/usuarios/editar/:id", (req, res) => {
 router.delete("/usuarios/delete/:id", (req, res) => {
   const id = req.params.id - 1;
   const user = users[id];
+
+  if (!user) {
+    res.status(400).json("Cadastro não encontrado.");
+    return;
+  }
   delete users[id];
   const message = `Usuário ${user.nome} deletado com sucesso.`;
   res.status(200).json({ message, users });
@@ -117,6 +122,11 @@ router.delete("/usuarios/delete/:id", (req, res) => {
 router.delete("/usuarios/deletar/:id", (req, res) => {
   const id = req.params.id - 1;
   const user = users[id];
+
+  if (!user) {
+    res.status(400).json("Cadastro não encontrado.");
+    return;
+  }
   users.splice(id, 1);
   const message = `Usuário ${user.nome} deletado com sucesso.`;
   res.status(200).json({ message, users });

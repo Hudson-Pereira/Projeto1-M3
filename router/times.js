@@ -48,8 +48,8 @@ router.post("/times/inserir", (req, res) => {
   }
 
   times.push(time);
-
-  res.status(200).json(`Time ${time.nome} cadastrado com sucesso.`);
+  const message = `Time ${time.nome} cadastrado com sucesso.`;
+  res.status(200).json({ message, times });
 });
 
 router.put("/times/editar/:id", (req, res) => {
@@ -70,13 +70,17 @@ router.put("/times/editar/:id", (req, res) => {
   }
 
   times[id] = time;
-  const message = `Usuário ${time.nome} alterado com sucesso.`;
+  const message = `Time ${time.nome} alterado com sucesso.`;
   res.status(200).json({ message, times });
 });
 
 router.delete("/times/delete/:id", (req, res) => {
   const id = req.params.id - 1;
-
+  const time = times[id];
+  if (!time) {
+    res.status(400).json("Cadastro não encontrado.");
+    return;
+  }
   delete times[id];
   const message = "Time deletado com sucesso.";
   res.status(200).json({ message, times });
@@ -84,6 +88,11 @@ router.delete("/times/delete/:id", (req, res) => {
 
 router.delete("/times/deletar/:id", (req, res) => {
   const id = req.params.id - 1;
+  const time = times[id];
+  if (!time) {
+    res.status(400).json("Cadastro não encontrado.");
+    return;
+  }
 
   times.splice(id, 1);
   const message = "Time deletado com sucesso.";
